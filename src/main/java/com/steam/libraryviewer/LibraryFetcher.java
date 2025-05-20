@@ -9,28 +9,27 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class LibraryFetcher {
-    public static ObservableList<Game> fetchGames(String apiKey, String steamId) {
+    private static final String BACKEND_URL = "https://steam-backend-divn.onrender.com/games";
+
+    public static ObservableList<Game> fetchGames(String username) {
         ObservableList<Game> games = FXCollections.observableArrayList();
+
         try {
-            String apiUrl = String.format(
-                    "https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=%s&steamid=%s&include_appinfo=true",
-                    apiKey, steamId);
+            String apiUrl = BACKEND_URL + "?username=" + username;
 
             URL url = new URL(apiUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 
-            JsonObject response = JsonParser.parseReader(new InputStreamReader(conn.getInputStream()))
-                    .getAsJsonObject()
-                    .getAsJsonObject("response");
+            JsonElement response = JsonParser.parseReader(new InputStreamReader(conn.getInputStream()));
 
-            JsonArray gameList = response.getAsJsonArray("games");
+            JsonArray gameList = response.getAsJsonArray();
 
             for (JsonElement el : gameList) {
                 JsonObject g = el.getAsJsonObject();
                 String name = g.get("name").getAsString();
                 int appid = g.get("appid").getAsInt();
-                int playtime = g.get("playtime_forever").getAsInt();
+                int playtime = g.get("playtime").getAsInt();
                 games.add(new Game(name, appid, playtime));
             }
 

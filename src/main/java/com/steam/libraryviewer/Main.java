@@ -11,7 +11,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        TextField apiKeyField = new TextField();
         TextField steamIdField = new TextField();
         Button fetchButton = new Button("Fetch Library");
 
@@ -28,15 +27,13 @@ public class Main extends Application {
         table.getColumns().addAll(nameCol, appIdCol, playtimeCol);
 
         fetchButton.setOnAction(e -> {
-            String apiKey = apiKeyField.getText();
             String steamId = steamIdField.getText();
-            ObservableList<Game> games = LibraryFetcher.fetchGames(apiKey, steamId);
+            ObservableList<Game> games = LibraryFetcher.fetchGames(steamId);
             table.setItems(games);
         });
 
         VBox root = new VBox(10,
-                new Label("Steam Web API Key:"), apiKeyField,
-                new Label("SteamID64:"), steamIdField,
+                new Label("Steam ID:"), steamIdField,
                 fetchButton, table);
         root.setPadding(new javafx.geometry.Insets(10));
 
