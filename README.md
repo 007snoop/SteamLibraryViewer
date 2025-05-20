@@ -9,3 +9,11 @@ A desktop JavaFX application that allows users to view their (or any public) Ste
 - (TODO) The user can export the list to CSV/Excel/Text.
 
 > This was made because I googled and a lot of people wanted a way to get their steam library, so here you go.
+
+
+## Back-end Repo
+[Back-end](https://github.com/007snoop/steam-backend)
+
+This repo is written in ejs and uses node.
+It is hosted on render.com.
+This is a free Node host so it may take upwards of 50 seconds for the API to respond. 
